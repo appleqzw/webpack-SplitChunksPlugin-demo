@@ -16,7 +16,7 @@ module.exports = {
         commons: {
           chunks: 'initial',
           minChunks: 2,
-          maxInitialRequests: 3 // 默认为3
+          maxInitialRequests: 5 // 默认为3
         },
         vendor: {
           test: /node_modules/,

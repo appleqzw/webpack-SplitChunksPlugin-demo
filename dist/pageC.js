@@ -148,7 +148,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./pageC.js","commons~pageA~pageB~pageC"]);
+/******/ 	deferredModules.push(["./pageC.js","commons~pageA~pageB~pageC","commons~pageB~pageC"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -164,18 +164,6 @@
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n/* harmony import */ var _util3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util3 */ \"./util3.js\");\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  console.log('pageC')\r\n});\r\n\n\n//# sourceURL=webpack:///./pageC.js?");
-
-/***/ }),
-
-/***/ "./util3.js":
-/*!******************!*\
-  !*** ./util3.js ***!
-  \******************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  console.log('util3')\r\n});\r\n\n\n//# sourceURL=webpack:///./util3.js?");
 
 /***/ })
 
