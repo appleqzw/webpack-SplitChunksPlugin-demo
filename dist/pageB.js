@@ -64,7 +64,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"commons~async1~async2~pageA":"commons~async1~async2~pageA","async1":"async1","async2":"async2"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -232,7 +232,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var vendor2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vendor2 */ \"./node_modules/vendor2.js\");\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n/* harmony import */ var _util3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util3 */ \"./util3.js\");\n\r\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  //懒加载\r\n  Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! ./async1 */ \"./async1.js\"))\r\n  Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! ./async2 */ \"./async2.js\"))\r\n  console.log('pageB')\r\n});\r\n\n\n//# sourceURL=webpack:///./pageB.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var vendor2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vendor2 */ \"./node_modules/vendor2.js\");\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n/* harmony import */ var _util3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util3 */ \"./util3.js\");\n\r\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  //懒加载\r\n  Promise.all(/*! import() | async1 */[__webpack_require__.e(\"commons~async1~async2~pageA\"), __webpack_require__.e(\"async1\")]).then(__webpack_require__.bind(null, /*! ./async1 */ \"./async1.js\"))\r\n  Promise.all(/*! import() | async2 */[__webpack_require__.e(\"commons~async1~async2~pageA\"), __webpack_require__.e(\"async2\")]).then(__webpack_require__.bind(null, /*! ./async2 */ \"./async2.js\"))\r\n  console.log('pageB')\r\n});\r\n\n\n//# sourceURL=webpack:///./pageB.js?");
 
 /***/ })
 

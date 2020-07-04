@@ -148,7 +148,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./pageA.js",0,"commons~pageA~pageB~pageC","vendor"]);
+/******/ 	deferredModules.push(["./pageA.js","commons~async1~async2~pageA","commons~pageA~pageB~pageC","vendor"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })

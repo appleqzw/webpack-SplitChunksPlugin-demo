@@ -4,7 +4,7 @@ import util3 from './util3'
 
 export default () => {
   //懒加载
-  import('./async1')
-  import('./async2')
+  import(/* webpackChunkName: "async1" */ './async1')
+  import(/* webpackChunkName: "async2" */ './async2')
   console.log('pageB')
 }
