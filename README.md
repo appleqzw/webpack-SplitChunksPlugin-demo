@@ -55,3 +55,55 @@ Entrypoint pageC = pageC.js
 [./util2.js] 51 bytes {pageA} {pageB} {pageC} [built]
 [./util3.js] 51 bytes {pageB} {pageC} [built]
 ```
+
+## 修改后的配置打包
+
+```js
+module.exports = {
+  //...
+  optimization: {
+    chunkIds: 'named', // 指定打包过程中的chunkId，设为named会生成可读性好的chunkId，便于debug
+    splitChunks: {
+      minSize: 0, // 默认30000（30kb），但是demo中的文件都很小，minSize设为0，让每个文件都满足大小条件
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          maxInitialRequests: 3 // 默认为3
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor'
+        }
+      }
+    }
+  }
+}
+```
+
+打包结果：
+
+```
+Hash: a3a899bedd0108470f44
+Version: webpack 4.43.0
+Time: 65ms
+Built at: 2020-07-04 11:15:22
+                       Asset       Size                     Chunks             Chunk Names
+commons~pageA~pageB~pageC.js  521 bytes  commons~pageA~pageB~pageC  [emitted]  commons~pageA~pageB~pageC
+                    pageA.js   7.57 KiB                      pageA  [emitted]  pageA
+                    pageB.js   7.45 KiB                      pageB  [emitted]  pageB
+                    pageC.js   7.31 KiB                      pageC  [emitted]  pageC
+                   vendor.js   1.06 KiB                     vendor  [emitted]  vendor
+Entrypoint pageA = commons~pageA~pageB~pageC.js vendor.js pageA.js
+Entrypoint pageB = commons~pageA~pageB~pageC.js vendor.js pageB.js
+Entrypoint pageC = commons~pageA~pageB~pageC.js pageC.js
+[./node_modules/vendor1.js] 55 bytes {vendor} [built]
+[./node_modules/vendor2.js] 55 bytes {vendor} [built]
+[./pageA.js] 142 bytes {pageA} [built]
+[./pageB.js] 142 bytes {pageB} [built]
+[./pageC.js] 111 bytes {pageC} [built]
+[./util1.js] 82 bytes {pageA} [built]
+[./util2.js] 51 bytes {commons~pageA~pageB~pageC} [built]
+[./util3.js] 51 bytes {pageB} {pageC} [built]
+```
