@@ -266,3 +266,80 @@ Entrypoint pageC = 0.js 1.js pageC.js
 [./util2.js] 51 bytes {0} [built]
 [./util3.js] 51 bytes {1} [built]
 ```
+
+> 以上都是针对入口文件的优化，下面加入 **按需加载** 的代码
+
+## 按需加载 1
+
+```js
+module.exports = {
+  optimization: {
+    chunkIds: 'named', // 指定打包过程中的chunkId，设为named会生成可读性好的chunkId，便于debug
+    splitChunks: {
+      minSize: 0, // 默认30000（30kb），但是demo中的文件都很小，minSize设为0，让每个文件都满足大小条件
+      // name:false,
+      cacheGroups: {
+        commons: {
+          chunks: 'all', //加入按需加载后，设为all将所有模块包括在优化范围内
+          minChunks: 2,
+          maxInitialRequests: 5 // 默认为3，无法满足我们的分包数量
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor'
+        }
+      }
+    }
+  }
+}
+```
+
+打包结果：
+
+```
+Hash: 26702677d891bc2f0e2a
+Version: webpack 4.43.0
+Time: 80ms
+Built at: 2020-07-04 21:18:16
+                       Asset       Size                     Chunks             Chunk Names
+                        0.js  625 bytes                          0  [emitted]
+                        1.js  625 bytes                          1  [emitted]
+commons~pageA~pageB~pageC.js  521 bytes  commons~pageA~pageB~pageC  [emitted]  commons~pageA~pageB~pageC
+      commons~pageB~pageC.js  515 bytes        commons~pageB~pageC  [emitted]  commons~pageB~pageC
+                    pageA.js   10.6 KiB                      pageA  [emitted]  pageA
+                    pageB.js   7.06 KiB                      pageB  [emitted]  pageB
+                    pageC.js   6.92 KiB                      pageC  [emitted]  pageC
+                   vendor.js   1.06 KiB                     vendor  [emitted]  vendor
+Entrypoint pageA = commons~pageA~pageB~pageC.js vendor.js pageA.js
+Entrypoint pageB = commons~pageA~pageB~pageC.js vendor.js commons~pageB~pageC.js pageB.js
+Entrypoint pageC = commons~pageA~pageB~pageC.js commons~pageB~pageC.js pageC.js
+chunk    {0} 0.js 83 bytes <{commons~pageA~pageB~pageC}> <{pageA}> <{vendor}> [rendered]
+ [./async1.js] 83 bytes {0} [built]
+chunk    {1} 1.js 83 bytes <{commons~pageA~pageB~pageC}> <{pageA}> <{vendor}> [rendered]
+ [./async2.js] 83 bytes {1} [built]
+chunk {commons~pageA~pageB~pageC} commons~pageA~pageB~pageC.js (commons~pageA~pageB~pageC) 51 bytes ={commons~pageB~pageC}= ={pageA}= ={pageB}= ={pageC}= ={vendor}= >{0}< >{1}< [initial] [rendered] split chunk (cache group: commons) (name: commons~pageA~pageB~pageC)
+ [./util2.js] 51 bytes {commons~pageA~pageB~pageC} [built]
+chunk {commons~pageB~pageC} commons~pageB~pageC.js (commons~pageB~pageC) 51 bytes ={commons~pageA~pageB~pageC}= ={pageB}= ={pageC}= ={vendor}= [initial] [rendered] split chunk (cache group: commons) (name: commons~pageB~pageC)
+ [./util3.js] 51 bytes {commons~pageB~pageC} [built]
+chunk {pageA} pageA.js (pageA) 283 bytes ={commons~pageA~pageB~pageC}= ={vendor}= >{0}< >{1}< [entry] [rendered]
+ [./pageA.js] 201 bytes {pageA} [built]
+ [./util1.js] 82 bytes {pageA} [built]
+chunk {pageB} pageB.js (pageB) 142 bytes ={commons~pageA~pageB~pageC}= ={commons~pageB~pageC}= ={vendor}= [entry] [rendered]
+ [./pageB.js] 142 bytes {pageB} [built]
+chunk {pageC} pageC.js (pageC) 111 bytes ={commons~pageA~pageB~pageC}= ={commons~pageB~pageC}= [entry] [rendered]
+ [./pageC.js] 111 bytes {pageC} [built]
+chunk {vendor} vendor.js (vendor) 110 bytes ={commons~pageA~pageB~pageC}= ={commons~pageB~pageC}= ={pageA}= ={pageB}= >{0}< >{1}< [initial] [rendered] split chunk (cache group: vendor) (name: vendor)
+ [./node_modules/vendor1.js] 55 bytes {vendor} [built]
+ [./node_modules/vendor2.js] 55 bytes {vendor} [built]
+[./async1.js] 83 bytes {0} [built]
+[./async2.js] 83 bytes {1} [built]
+[./node_modules/vendor1.js] 55 bytes {vendor} [built]
+[./node_modules/vendor2.js] 55 bytes {vendor} [built]
+[./pageA.js] 201 bytes {pageA} [built]
+[./pageB.js] 142 bytes {pageB} [built]
+[./pageC.js] 111 bytes {pageC} [built]
+[./util1.js] 82 bytes {pageA} [built]
+[./util2.js] 51 bytes {commons~pageA~pageB~pageC} [built]
+[./util3.js] 51 bytes {commons~pageB~pageC} [built]
+```
