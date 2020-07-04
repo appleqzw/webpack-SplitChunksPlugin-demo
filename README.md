@@ -159,3 +159,56 @@ Entrypoint pageC = commons~pageA~pageB~pageC.js commons~pageB~pageC.js pageC.js
 [./util2.js] 51 bytes {commons~pageA~pageB~pageC} [built]
 [./util3.js] 51 bytes {commons~pageB~pageC} [built]
 ```
+
+## 注释掉 name 属性
+
+```js
+module.exports = {
+  optimization: {
+    chunkIds: 'named', // 指定打包过程中的chunkId，设为named会生成可读性好的chunkId，便于debug
+    splitChunks: {
+      minSize: 0, // 默认30000（30kb），但是demo中的文件都很小，minSize设为0，让每个文件都满足大小条件
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          maxInitialRequests: 5 // 默认为3
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial'
+          // name: 'vendor'
+        }
+      }
+    }
+  }
+}
+```
+
+打包结果：
+
+```
+Hash: 2bf6f84a4aa9dd4ccad1
+Version: webpack 4.43.0
+Time: 64ms
+Built at: 2020-07-04 17:45:26
+                       Asset       Size                     Chunks             Chunk Names
+commons~pageA~pageB~pageC.js  521 bytes  commons~pageA~pageB~pageC  [emitted]  commons~pageA~pageB~pageC
+      commons~pageB~pageC.js  515 bytes        commons~pageB~pageC  [emitted]  commons~pageB~pageC
+                    pageA.js   7.58 KiB                      pageA  [emitted]  pageA
+                    pageB.js   7.06 KiB                      pageB  [emitted]  pageB
+                    pageC.js   6.92 KiB                      pageC  [emitted]  pageC
+             vendor~pageA.js  588 bytes               vendor~pageA  [emitted]  vendor~pageA
+             vendor~pageB.js  588 bytes               vendor~pageB  [emitted]  vendor~pageB
+Entrypoint pageA = commons~pageA~pageB~pageC.js vendor~pageA.js pageA.js
+Entrypoint pageB = commons~pageA~pageB~pageC.js commons~pageB~pageC.js vendor~pageB.js pageB.js
+Entrypoint pageC = commons~pageA~pageB~pageC.js commons~pageB~pageC.js pageC.js
+[./node_modules/vendor1.js] 55 bytes {vendor~pageA} [built]
+[./node_modules/vendor2.js] 55 bytes {vendor~pageB} [built]
+[./pageA.js] 142 bytes {pageA} [built]
+[./pageB.js] 142 bytes {pageB} [built]
+[./pageC.js] 111 bytes {pageC} [built]
+[./util1.js] 82 bytes {pageA} [built]
+[./util2.js] 51 bytes {commons~pageA~pageB~pageC} [built]
+[./util3.js] 51 bytes {commons~pageB~pageC} [built]
+```

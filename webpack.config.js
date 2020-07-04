@@ -20,8 +20,8 @@ module.exports = {
         },
         vendor: {
           test: /node_modules/,
-          chunks: 'initial',
-          name: 'vendor'
+          chunks: 'initial'
+          // name: 'vendor'
         }
       }
     }
