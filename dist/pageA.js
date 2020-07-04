@@ -62,11 +62,6 @@
 /******/
 /******/ 	var deferredModules = [];
 /******/
-/******/ 	// script path function
-/******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js"
-/******/ 	}
-/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -91,67 +86,6 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		var promises = [];
-/******/
-/******/
-/******/ 		// JSONP chunk loading for javascript
-/******/
-/******/ 		var installedChunkData = installedChunks[chunkId];
-/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
-/******/
-/******/ 			// a Promise means "currently loading".
-/******/ 			if(installedChunkData) {
-/******/ 				promises.push(installedChunkData[2]);
-/******/ 			} else {
-/******/ 				// setup Promise in chunk cache
-/******/ 				var promise = new Promise(function(resolve, reject) {
-/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
-/******/ 				});
-/******/ 				promises.push(installedChunkData[2] = promise);
-/******/
-/******/ 				// start chunk loading
-/******/ 				var script = document.createElement('script');
-/******/ 				var onScriptComplete;
-/******/
-/******/ 				script.charset = 'utf-8';
-/******/ 				script.timeout = 120;
-/******/ 				if (__webpack_require__.nc) {
-/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
-/******/ 				}
-/******/ 				script.src = jsonpScriptSrc(chunkId);
-/******/
-/******/ 				// create error before stack unwound to get useful stacktrace later
-/******/ 				var error = new Error();
-/******/ 				onScriptComplete = function (event) {
-/******/ 					// avoid mem leaks in IE.
-/******/ 					script.onerror = script.onload = null;
-/******/ 					clearTimeout(timeout);
-/******/ 					var chunk = installedChunks[chunkId];
-/******/ 					if(chunk !== 0) {
-/******/ 						if(chunk) {
-/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
-/******/ 							var realSrc = event && event.target && event.target.src;
-/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
-/******/ 							error.name = 'ChunkLoadError';
-/******/ 							error.type = errorType;
-/******/ 							error.request = realSrc;
-/******/ 							chunk[1](error);
-/******/ 						}
-/******/ 						installedChunks[chunkId] = undefined;
-/******/ 					}
-/******/ 				};
-/******/ 				var timeout = setTimeout(function(){
-/******/ 					onScriptComplete({ type: 'timeout', target: script });
-/******/ 				}, 120000);
-/******/ 				script.onerror = script.onload = onScriptComplete;
-/******/ 				document.head.appendChild(script);
-/******/ 			}
-/******/ 		}
-/******/ 		return Promise.all(promises);
-/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -205,9 +139,6 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/ 	// on error function for async loading
-/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-/******/
 /******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
 /******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
 /******/ 	jsonpArray.push = webpackJsonpCallback;
@@ -217,7 +148,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./pageA.js","commons~pageA~pageB~pageC","vendor"]);
+/******/ 	deferredModules.push(["./pageA.js",0,"commons~pageA~pageB~pageC","vendor"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -232,19 +163,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var vendor1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vendor1 */ \"./node_modules/vendor1.js\");\n/* harmony import */ var _util1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util1 */ \"./util1.js\");\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n\r\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  //懒加载\r\n  __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./async1 */ \"./async1.js\"))\r\n  __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./async2 */ \"./async2.js\"))\r\n  console.log('pageA')\r\n});\r\n\n\n//# sourceURL=webpack:///./pageA.js?");
-
-/***/ }),
-
-/***/ "./util1.js":
-/*!******************!*\
-  !*** ./util1.js ***!
-  \******************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  console.log('util1')\r\n});\r\n\n\n//# sourceURL=webpack:///./util1.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var vendor1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vendor1 */ \"./node_modules/vendor1.js\");\n/* harmony import */ var _util1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util1 */ \"./util1.js\");\n/* harmony import */ var _util2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util2 */ \"./util2.js\");\n\r\n\r\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n  //懒加载\r\n  // import('./async1')\r\n  // import('./async2')\r\n  console.log('pageA')\r\n});\r\n\n\n//# sourceURL=webpack:///./pageA.js?");
 
 /***/ })
 
